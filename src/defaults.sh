@@ -32,14 +32,9 @@
 [ -z "$TC_BINARY" ] && TC_BINARY=$(command -v tc)
 [ -z "$IP" ] && IP=ip_wrapper
 [ -z "$IP_BINARY" ] && IP_BINARY=$(command -v ip)
-[ -z "$IPTABLES" ] && IPTABLES=iptables_wrapper
-[ -z "$IPTABLES_BINARY" ] && IPTABLES_BINARY=$(command -v iptables)
-[ -z "$IPTABLES_BINARY" ] && IPTABLES_BINARY=$(command -v iptables-nft)
-[ -z "$IP6TABLES" ] && IP6TABLES=ip6tables_wrapper
-[ -z "$IP6TABLES_BINARY" ] && IP6TABLES_BINARY=$(command -v ip6tables)
-[ -z "$IP6TABLES_BINARY" ] && IP6TABLES_BINARY=$(command -v ip6tables-nft)
-[ -z "$IPTABLES_ARGS" ] && IPTABLES_ARGS="-w 1"
-
+[ -z "$NFT" ] && NFT=nft_wrapper
+[ -z "$NFT_BINARY" ] && NFT_BINARY=$(command -v nft)
+[ -z "$SQM_NFT_PRIORITY" ] && SQM_NFT_PRIORITY=-140
 
 # Try modprobe first, fall back to insmod
 if [ -z "$INSMOD" ]; then
@@ -108,8 +103,5 @@ SILENT=0
 # stop operation
 [ -z "$CLEANUP" ] && CLEANUP=0
 
-# Transaction log for unwinding ipt rules
-IPT_TRANS_LOG="${SQM_STATE_DIR}/${IFACE}.iptables.log"
-
 # These are the modules that do_modules() will attempt to load
-ALL_MODULES="sch_$QDISC sch_ingress act_mirred cls_fw cls_flow cls_u32 sch_htb"
+ALL_MODULES="sch_$QDISC sch_ingress act_mirred cls_flow cls_u32 sch_htb nf_tables nft_chain_nat nf_conntrack"
