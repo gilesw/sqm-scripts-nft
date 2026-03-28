@@ -20,6 +20,10 @@ define Package/sqm-scripts-nft/description
   A pure nftables implementation of SQM scripts for OpenWrt.
 endef
 
+define Package/sqm-scripts-nft/conffiles
+/etc/config/sqm
+endef
+
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
 
