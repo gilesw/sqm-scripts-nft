@@ -865,9 +865,10 @@ eth_setup() {
     ethtool -K $IFACE gro off
 
     if [ -e /sys/class/net/$IFACE/queues/tx-0/byte_queue_limits ]; then
+       local IFACE_MTU=$( get_mtu ${IFACE} )
        for i in /sys/class/net/$IFACE/queues/tx-*/byte_queue_limits
        do
-          echo $(( 4 * $( get_mtu ${IFACE} ) )) > $i/limit_max
+          echo $(( 4 * IFACE_MTU )) > $i/limit_max
        done
     fi
 }
