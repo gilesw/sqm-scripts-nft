@@ -12,7 +12,7 @@ define Package/sqm-scripts-nft
   SECTION:=net
   CATEGORY:=Network
   TITLE:=SQM Scripts (Pure nftables)
-  DEPENDS:=+tc-tiny +kmod-sched-cake +nftables
+  DEPENDS:=+tc +kmod-sched-cake +nftables
   PKGARCH:=all
 endef
 
@@ -22,7 +22,9 @@ endef
 
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
-	cp -r ../../../* $(PKG_BUILD_DIR)/ 2>/dev/null || true
+	cp -r $(TOPDIR)/package/sqm-scripts-nft/src $(PKG_BUILD_DIR)/
+	cp -r $(TOPDIR)/package/sqm-scripts-nft/platform $(PKG_BUILD_DIR)/
+	cp $(TOPDIR)/package/sqm-scripts-nft/Makefile.main $(PKG_BUILD_DIR)/Makefile
 endef
 
 define Build/Compile
