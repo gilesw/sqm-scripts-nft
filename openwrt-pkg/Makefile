@@ -22,9 +22,11 @@ endef
 
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
+
 	cp -r $(TOPDIR)/package/sqm-scripts-nft/src $(PKG_BUILD_DIR)/
 	cp -r $(TOPDIR)/package/sqm-scripts-nft/platform $(PKG_BUILD_DIR)/
 	cp $(TOPDIR)/package/sqm-scripts-nft/Makefile.main $(PKG_BUILD_DIR)/Makefile
+
 endef
 
 define Build/Compile
