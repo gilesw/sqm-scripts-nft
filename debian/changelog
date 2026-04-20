@@ -1,0 +1,7 @@
+sqm-scripts-nft (1.6.0-1) unstable; urgency=medium
+
+  * Initial Debian packaging for the nftables-native sqm-scripts fork.
+  * Ships layer_cake.qos, piece_of_cake.qos, simple.qos, simplest.qos recipes.
+  * Systemd instanced unit sqm@.service (one per interface).
+
+ -- Giles Westwood <giles.westwood@gmail.com>  Mon, 20 Apr 2026 00:00:00 +0000

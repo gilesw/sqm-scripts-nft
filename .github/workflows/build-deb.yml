@@ -1,0 +1,63 @@
+name: Build Debian package
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-deb:
+    name: Build .deb on Ubuntu ${{ matrix.release }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - release: noble
+            runner: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            devscripts \
+            debhelper \
+            build-essential \
+            fakeroot \
+            dh-exec \
+            pkg-config
+
+      - name: Build .deb
+        run: |
+          dpkg-buildpackage -us -uc -b
+          mkdir -p out
+          mv ../sqm-scripts-nft_*.deb ../sqm-scripts-nft_*.buildinfo ../sqm-scripts-nft_*.changes out/ 2>/dev/null || true
+          ls -la out/
+
+      - name: Smoke test install
+        run: |
+          sudo apt-get install -y ./out/sqm-scripts-nft_*.deb
+          test -x /usr/bin/sqm
+          test -f /etc/sqm/default.conf
+          test -f /etc/sqm/sqm.conf
+          test -f /usr/lib/sqm/layer_cake.qos
+          systemctl cat sqm@.service
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sqm-scripts-nft-${{ matrix.release }}
+          path: out/*.deb
+          if-no-files-found: error
+
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: out/*.deb
+          fail_on_unmatched_files: true

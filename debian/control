@@ -1,0 +1,27 @@
+Source: sqm-scripts-nft
+Section: net
+Priority: optional
+Maintainer: Giles Westwood <giles.westwood@gmail.com>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.6.2
+Homepage: https://github.com/gilesw/sqm-scripts-nft
+
+Package: sqm-scripts-nft
+Architecture: all
+Depends: ${misc:Depends},
+ iproute2,
+ nftables
+Recommends: kmod
+Conflicts: sqm-scripts
+Replaces: sqm-scripts
+Provides: sqm-scripts
+Description: Smart Queue Management scripts (nftables-native fork)
+ Nftables-native fork of sqm-scripts, providing SQM (Smart Queue
+ Management) on Linux using CAKE (or fq_codel) as the queue discipline.
+ .
+ This fork replaces iptables calls with native nft rules, making it a
+ clean fit for systems already using nftables/firewall4 as their
+ packet-filtering frontend.
+ .
+ Interfaces are configured via /etc/sqm/<iface>.iface.conf and started
+ as instanced systemd units (sqm@<iface>.service).

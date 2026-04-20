@@ -1,0 +1,18 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	@echo "sqm-scripts-nft: nothing to compile"
+
+override_dh_auto_install:
+	$(MAKE) install \
+	    DESTDIR=$(CURDIR)/debian/sqm-scripts-nft \
+	    PREFIX=/usr \
+	    PLATFORM=linux
+
+override_dh_installsystemd:
+	dh_installsystemd --no-enable --no-start
